@@ -17,17 +17,15 @@ int main(){
         return 0;
     }
 
-    password -= 14;
-    password <<= 2;
-    password += 9;
+    password = ((password - 14) << 2) + 9;
 
     if (password != 173){
         printf ("WRONG PASSWORD!\n");
         return 0;
     }
 
-    printf ("Welcome, admin! Here is the super secret sauce!\n");
-    printf ("sprout{crappy_login_system}");
+    printf ("THANK YOU ADMIN!\n");
+    printf ("BUT OUR PRINCESS IS IN ANOTHER CASTLE!\n");
 
     return 0;
 }

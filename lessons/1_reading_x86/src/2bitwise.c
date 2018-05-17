@@ -9,6 +9,6 @@ int main(){
     int AND = x & y;
     int OR = x | y;
     int XOR = x ^ y;
-
-    return 0;
+    int LSHIFT = x >> y;
+    int RSHIFT = x << y;
 }

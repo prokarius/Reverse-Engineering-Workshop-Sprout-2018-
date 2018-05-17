@@ -19,6 +19,8 @@ two of the most basic data types that will be used.
 
 - - - -
 
+### `int`
+
 An `int` is the most basic numerical unit. It represents an **int**eger that has 32
 bits. The value of the integer is given by the binary value of the bits that it is
 made up of. E.g. 00001010 = value 10
@@ -67,7 +69,7 @@ For example: 6789 = **6** \* 1000 + **7** \* 100 + **8** \* 10 + **9** \* 1
 Why did we choose the numbers 1000, 100, 10 and 1? It is because those are the
 powers of 10. Why 10? Because that's the number of symbols we have!
 
-Therefore, suppose we have only two symbols, then what is the value of `1011`. 
+Therefore, suppose we have only two symbols, then what is the value of `0b1011`. 
 Well, using the same idea as above, we get the following:
 
 **1** \* 8 + **0** \* 4 + **1** \* 2 + **1** \* 1 = 11 (in decimal).
@@ -85,9 +87,9 @@ from the given decimal number without it going negative. We write the symbol `1`
 the location of that power of 2, and subtract it away. We can keep doing this, and
 once we are done, we can fill in the gaps with the symbol `0`. Lets try:
 
-Given the number 42, what is the binary representation?
+Given the number `42`, what is the binary representation?
 
-Note that the biggest power of 2 that will subtract from 42 is 32 (which is
+Note that the biggest power of 2 that will subtract from `42` is `32` (which is
 2 multiplied to itself 5 times). We can go to the place represented by 2^5 and write
 the symbol `1` there:
 
@@ -96,15 +98,15 @@ the symbol `1` there:
 | 1 | ? | ? | ? | ? | ? |
 
 Now we need to figure out what is the biggest power of 2 that will subtract from
-`42-32 = 10`. With a bit of testing we realise it is 8, which is represented by 2^3.
+`42-32 = 10`. With a bit of testing we realise it is `8`, which is represented by 2^3.
 We go over to the 2^3 section and write the symbol `1` there.
 
 |2^5|2^4|2^3|2^2|2^1|2^0|
 |---|---|---|---|---|---|
 | 1 | ? | 1 | ? | ? | ? |
 
-Lastly, we are left with 2, which is just 2^1. So we can write the symbol `1` in
-that location as well. Since what we are left with is 0, we can simply fill in the
+Lastly, we are left with `2`, which is just 2^1. So we can write the symbol `1` in
+that location as well. Since what we are left with is `0`, we can simply fill in the
 ?s with `0`s as well:
 
 |2^5|2^4|2^3|2^2|2^1|2^0|
@@ -119,7 +121,7 @@ There is also one more number system that you will be encountering. It is called
 the hexadecimal system. Hexa stands for 6 (as in hexagon), and decimal for 10. 
 Why the hexadecimal system is important: How many different nibbles are there?
 There are 4 bits in a nibble, and each can be either `0` or `1`. Hence there are
-a total of `2 \* 2 \* 2 \* 2 = 16` different nibbles! Perhaps we can represent 
+a total of 2 \* 2 \* 2 \* 2 = 16 different nibbles! Perhaps we can represent 
 each nibble with a different symbol, from the hexadecimal system.
 
 The hexadecimal system has 16 symbols: `0123456789ABCDEF`. Note that we cannot
@@ -137,6 +139,8 @@ value of 15. So in total, the value of `0xAF` is simply:
 
 - - - -
 
+### `char`
+
 A `char` is an ASCII **char**acter. Remember that strings of text are really just
 a bunch of characters put together. Note however, that there is a special character
 to demarcate the end of the string -- the `NULL` byte. It is a character whose bits
@@ -149,12 +153,14 @@ symbols to represent a character.
 The English capital letters come from the range `0x41` to `0x5A`, and the small
 letters come from the range `0x61` to `0x7A`. The numerical symbols come from the
 range `0x30` to `0x39`. In fact, let me just link a picture from the website
-[https://www.asciitable.com/] (https://www.asciitable.com/) that probably took it
+[https://www.asciitable.com/](https://www.asciitable.com/) that probably took it
 from lookuptables.com:
 
 ![Figure 1: ascii Table][ascii]
 
 - - - -
+
+### `boolean` and others
 
 However, in C, there is no such thing as a definite `true`/`false` value (these values
 are called `boolean` values btw). In C, only the number 0 returns `false`, every
