@@ -41,12 +41,12 @@ machine language.
 
 ## Syllabus
 
-0. [An Intoduction to C]
-1. [Reading x86]
-2. [Loops and recursion in x86]
-3. [Reversing Exercises] 
+0. [An Intoduction to C][lesson0]
+1. [Reading x86][lesson1]
+2. [Functions][lesson2]
+3. [Loops and recursion in x86] 
 
-[An Introduction to C]: ./lessons/0_introduction/lessonplan.md
-[Reading x86]: ./lessons/1_reading_x86/lessonplan.md
-
+[lesson0]: ./lessons/0_introduction/lessonplan.md
+[lesson1]: ./lessons/1_reading_x86/lessonplan.md
+[lesson2]: ./lessons/2_functions/lessonplan.md
 

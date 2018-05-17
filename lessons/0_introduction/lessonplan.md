@@ -179,6 +179,21 @@ In a C program, there would be functions, statements and expressions.
 
 ### Statements and Expressions
 
+Here are some examples of statements and expressions: 
+
+```
+int x = 5;  // Statement
+x + 5; // Expression
+
+// An if-else statement
+if (x == 5){ 
+    printf ("The value of x is 5.\n"); // Expression
+}
+else{
+    printf ("The value of x is not 5.\n");
+}
+```
+
 Statements are code that do not return a value. An example of a statement would be
 an if-else statement. These are _conditional_ statements that allow for the computer
 to make decision based on fulfilled or unfulfilled conditions.
@@ -188,27 +203,13 @@ identified beginning with a type and followed by a string of characters that
 represent the name of the variable. This can be thought of in the same was as
 algebra. From that point on, you would be able to use the variable with its name.
 
-Here is an example: 
-
-```
-int x = 5;
-
-if (x == 5){
-    printf ("The value of x is 5.\n");
-}
-else{
-    printf ("The value of x is not 5.\n");
-}
-```
 
 Expressions are lines of code that return a specific value. For example, `4 + 2`
 is an expression, because it returns the value `6`. Note that things which return
 the value of `void` is also considered an expression. As a rule of thumb, as long as
-there is a return value, it would be considered an expression. Similarly, if a
-function was declared with `int check()`, the piece of code `check()` would be an
-expression.
+there is a return value, it would be considered an expression.
 
-Consider this line of code:
+Consider these lines of code:
 
 ```
 int x = 5;
