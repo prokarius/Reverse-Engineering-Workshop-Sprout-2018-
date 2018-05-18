@@ -14,7 +14,8 @@ chewed up by a compiler and converted into a languages your thinking rock can
 understand, and try to turn it back into language we can understand.
 
 Your boss managed to find a system which contains sensitive information about your
-competitors. He has given you the task of breaking into the [password secured file][password]
+competitors. He has given you the task of breaking into the
+[password secured file][password].
 See if you can reverse engineer it...
 
 So lets decompile it!
@@ -54,11 +55,12 @@ designers have created these things called **registers**, which are kinda like
 little pieces of memory which allows for quick memory usage. This speeds up the
 process of accessing data, and allows 
 
-In the x86 architecture, there exists 8 main registers, however, we will only take
-note of 6 of these registers, split into two different groups. Each of these
-registers do play special roles, but for this workshop we will see each of the
-registers as general purpose registers, and not delve too deep into their specific
-functions.
+In the x86 architecture, there exists a large number of registers, however, we will
+only take note of 10 of these registers, split into two different groups, for now.
+Each of these registers do play special roles, but for this workshop we will see
+each of the registers as general purpose registers, and not delve too deep into
+their specific functions. We will keep the explanation of the *flag register* and
+the *program counter* for later though.
 
 
 ### "Data" based registers: `eax`, `ebx`, `ecx`, `edx`
@@ -73,7 +75,7 @@ However, it may also be possible to see these registers represented as `ax`, `bx
 but just in case the appear, you'll know what is going on. Each of the registers
 also has a sort of purpose. For example, `eax` is used as the return value register.
 When a function returns a value, it is usually stored in the `eax` register. `ecx`
-is usually used as a counter, for loops. More on this in the next chapter.
+is usually used as a counter, for loops. More on this in the last chapter.
 
 Suppose I want to work with a single variable. That's fine, we can just take the 
 value of the variable and store it in a register. Then we are able to work with it.
@@ -108,6 +110,22 @@ in reverse order.
 
 So suppose you are reading some strings from the stack, do not be surprised if the
 characters of the strings are backwards!
+
+Also, another curious property of the stack is that it grows *downwards*. What this
+means is that the more objects you push on to the stack, the memory address of it
+decreases. Suppose the first object you push into the stack goes to address `B2CD`,
+then the next item you push onto the stack will be at address `B2CC` and so on.
+
+| Address |  Stack  |
+|  B2CD   |   'a'   |
+|  B2CC   |   'b'   |
+|  B2CB   |   'c'   |
+|  B2CA   |   'd'   |
+|  B2C9   |   'e'   |
+|  B2C8   |   'f'   |
+
+When you read the memory starting from `B2C8`, you'll see the character string
+`fedcba`! This also explain why strings are backwards on the stack.
 
 For example in the executable [assignment][assign], if we go to the main section, 
 we should see the following pieces of assembly (from IDA pro):
@@ -161,9 +179,9 @@ pointers, one of which you can already see in the memory address on the stack:
 
 [assign]: ./src/1assignment.c
 
-### ebp, esp
+### `ebp`, `esp`
 
-These two registers are the __stack base pointer__ and the __stack pointer__
+These two registers are the *stack base pointer* and the *stack pointer*
 respectively. Why is it required that we have two pointers?
 
 The stack also serves one more purpose: Function calls. These two registers help 
@@ -173,15 +191,15 @@ function calls in the next chapter.
 While we are talking about function calls, there are two more registers I have not
 covered yet. And those are...
 
-### esi, edi
+### `esi`, `edi`
 
 But for now lets just pretend they are just 2 other registers. We will see them a
 bit later, when we try to decode the challenge our boss has given us. 
 
-And with that, I present a picture of all the registers I clearly just screenshotted
-from wikipedia:
+And with that, I present a picture of all the registers which is clearly just
+screenshotted from some wikipedia page:
 
-[References to the registers][registers]
+![References to the registers][registers]
 
 [registers]: ./images/registers.png
 
@@ -306,60 +324,61 @@ int main() {
     int OR = x | y;
     int XOR = x ^ y;
     int LSHIFT = x >> y;
-    int RSHIFT = x << y;>
+    int RSHIFT = x << y;
 
     return 0;
 }
 ```
 
-These becomes:
+These [becomes][bitwiseassembly]:
 
 ```
-mov     [rbp+var_24], 16h  // This is x (22 = 0x16). x now lives in the house [rbp+var_24]
-mov     [rbp+var_20], 0Ah  // This is y (10 = 0x0A). y now lives in the house [rbp+var_20]
+mov     [rbp+var_24], 16h  ; This is x (22 = 0x16). x now lives in the house [rbp+var_24]
+mov     [rbp+var_20], 0Ah  ; This is y (10 = 0x0A). y now lives in the house [rbp+var_20]
 
-mov     eax, [rbp+var_24]  // Copy x into edx
-add     eax, [rbp+var_20]  // Add the value of y into eax.
-mov     [rbp+var_1C], eax  // Copy the new value of eax into a new house at [rbp+var_1C]
+mov     eax, [rbp+var_24]  ; Copy x into edx
+add     eax, [rbp+var_20]  ; Add the value of y into eax.
+mov     [rbp+var_1C], eax  ; Copy the new value of eax into a new house at [rbp+var_1C]
 
-mov     eax, [rbp+var_24]  // Copy x into eax
-sub     eax, [rbp+var_20]  // Subtract the value of y from eax
-mov     [rbp+var_18], eax  // Copy the new value of eax into a new house at [rbp+var_18]
+mov     eax, [rbp+var_24]  ; Copy x into eax
+sub     eax, [rbp+var_20]  ; Subtract the value of y from eax
+mov     [rbp+var_18], eax  ; Copy the new value of eax into a new house at [rbp+var_18]
 
-mov     eax, [rbp+var_24]  // Copy x into eax
-and     eax, [rbp+var_20]  // AND the value of y with eax
-mov     [rbp+var_14], eax  // Copy the new value of eax into a new house at [rbp+var_14]
+mov     eax, [rbp+var_24]  ; Copy x into eax
+and     eax, [rbp+var_20]  ; AND the value of y with eax
+mov     [rbp+var_14], eax  ; Copy the new value of eax into a new house at [rbp+var_14]
 
-mov     eax, [rbp+var_24]  // Copy x into eax
-or      eax, [rbp+var_20]  // OR the value of y with eax
-mov     [rbp+var_10], eax  // Copy the new value of eax into a new house at [rbp+var_10]
+mov     eax, [rbp+var_24]  ; Copy x into eax
+or      eax, [rbp+var_20]  ; OR the value of y with eax
+mov     [rbp+var_10], eax  ; Copy the new value of eax into a new house at [rbp+var_10]
 
-mov     eax, [rbp+var_24]  // Copy x into eax
-xor     eax, [rbp+var_20]  // XOR the value of y with eax
-mov     [rbp+var_C], eax   // Copy the new value of eax into a new house at [rbp+var_C]
+mov     eax, [rbp+var_24]  ; Copy x into eax
+xor     eax, [rbp+var_20]  ; XOR the value of y with eax
+mov     [rbp+var_C], eax   ; Copy the new value of eax into a new house at [rbp+var_C]
 
-mov     eax, [rbp+var_20]  // Copy y into eax
-mov     edx, [rbp+var_24]  // Copy x into edx
-mov     ecx, eax           // Copy eax (y) into ecx
-sar     edx, cl            // Shift edx rightwards by an amount equal to the lowest 8 bits of cl (y)
-mov     eax, edx           // Copy the value of edx into eax
-mov     [rbp+var_8], eax   // Copy the new value of eax into a new house at [rbp+var_8]
+mov     eax, [rbp+var_20]  ; Copy y into eax
+mov     edx, [rbp+var_24]  ; Copy x into edx
+mov     ecx, eax           ; Copy eax (y) into ecx
+sar     edx, cl            ; Shift edx rightwards by an amount equal to the lowest 8 bits of cl (y)
+mov     eax, edx           ; Copy the value of edx into eax
+mov     [rbp+var_8], eax   ; Copy the new value of eax into a new house at [rbp+var_8]
 
-mov     eax, [rbp+var_20]  // Copy y into eax
-mov     edx, [rbp+var_24]  // Copy x into edx
-mov     ecx, eax           // Copy eax (y) into ecx
-shl     edx, cl            // Shift edx leftwards by an amount equal to the lowest 8 bits of cl (y)
-mov     eax, edx           // Copy the value of edx into eax
-mov     [rbp+var_4], eax   // Copy the new value of eax into a new house at [rbp+var_4]
+mov     eax, [rbp+var_20]  ; Copy y into eax
+mov     edx, [rbp+var_24]  ; Copy x into edx
+mov     ecx, eax           ; Copy eax (y) into ecx
+shl     edx, cl            ; Shift edx leftwards by an amount equal to the lowest 8 bits of cl (y)
+mov     eax, edx           ; Copy the value of edx into eax
+mov     [rbp+var_4], eax   ; Copy the new value of eax into a new house at [rbp+var_4]
 
-mov     eax, 0             // Prepare to return 0.
+mov     eax, 0             ; Prepare to return 0.
 ```
 
 If you are trying to reverse engineer other executable files, you might be lucky
 enough to meet other instructions. In that case, you may want to consult online
-guides and documentation. More can be found at [this website][x86_instructions]
+guides and documentation. More can be found at [this website][x86_instructions].
 
 [bitwise]: ./src/2bitwise.c
+[bitwiseassembly]: ./src/bitwise
 [x86_insturctions]: http://kernfunny.org/x86/
 
 
@@ -373,8 +392,8 @@ how, and when to branch.
 The main idea behind if else statements is that you want the computer to do
 something should a certain condition be fulfilled. You also want to be able to tell
 the computer to do something else should another set of conditions not be fulfilled.
-This is done in x86 assembly through the use of the compare instruction (`cmp`) and
-the `jump` series of instructions. For now, just take it as
+This is done in x86 assembly through the use of the compare instruction (`cmp`), the
+test (`test`) instruction, and the `jump` series of instructions.
 
 The `jump` series of instructions are usually preceeded by a `cmp` instruction. They
 are based on the result of the previous compare instruction, and the jump would be
@@ -385,6 +404,8 @@ instructions in the jump series. They are as such:
 |------|-------------------------------|
 |  je  |          Jump if Equal        |
 |  jne |        Jump if not Equal      |
+|  jz  |          Jump if Zero         |
+|  jnz |        Jump if not Zero       |
 |  jl  |        Jump if Less than      |
 |  jlt |   Jump if Less than or Equal  |
 |  jg  |      Jump if Greater than     |
@@ -392,24 +413,24 @@ instructions in the jump series. They are as such:
 |  jmp |       Unconditional Jump      |
 
 
-### Not so short digression to how `cmp` works
+### Not so short digression to how flags for jump works
 
 In a computer, on top of the 8 registers we introduced above, there also exists a
-special register called the _flag register_. This register is in charge of taking
+special register called the *flag register*. This register is in charge of taking
 note when certain conditions in the code are being fulfilled. An example of a flag is
-the overflow flag (`OF`). This flag triggers when the value of the piece of data
+the *overflow flag* (`OF`). This flag triggers when the value of the piece of data
 we are working with exceeds the number of bits available in the register. An
 example would be when we subtract a large negative value from a large
 positive value. The resulting value might be bigger than the largest positive
 number that could be represented by the number of bits of the register, and hence
 would result in an overflow, setting the flag.
 
-Of particular interest is the _zero_ flag (`ZF`). It is set when the results of an
+Of particular interest is the *zero* flag (`ZF`). It is set when the results of an
 arithmetic operation results in a zero value. The next instruction is usually
 followed by a `jz` instruction. This is because the `jz` instruction relies on the
 zero flag to decide whether it should jump to the next value.
 
-Another flag we should take note of are the _sign_ flag (`SF`). This lets us know
+Another flag we should take note of are the *sign* flag (`SF`). This lets us know
 whether the result of the previous instruction was positive or negative. If the
 result is a negative number, then the sign flag would be set to 1. With the
 three flags above, we can reason out a couple of how some of the instructions from
@@ -445,7 +466,32 @@ is negative, it also sets `SF`.
 From here we can see that we want to take the jump if `SF != OF` or if `ZF == 1`.
 
 You can try to do the same reasoning for the other instructions in the `jump`
-series.
+series. You can check your understanding at [this website][cmps]
+
+[cmps]: http://unixwiz.net/techtips/x86-jumps.html
+
+
+### `cmp` vs `test`
+
+Now it might be the case where instead of seeing a `cmp` instruction before a `jump`
+instruction, you see a `test` instruction. Truth of the matter is, the `test`
+instruction isn't all that different from the `cmp` instruction. In some beginner
+level textbooks, they even remark that `cmp` and `test` instructions are
+interchangable when a `jz` instruction is concerned. However there are some small
+subtle differences in the way they work.
+
+A `cmp` instruction takes the second parameter and *SUBTRACTS* it from the first,
+whereas in a `test` instruction, the *bitwise AND* operation is applied to both
+parameters. In both cases, the result is discarded and not used again, but the side
+effects of doing both these operations are reflected in the flag register. The
+instruction sets some flags which will be read by the computer to determine if the
+following `jump` instruction is to be taken.
+
+Why would a program want to use the `test` instruction though? Remember that bitwise
+operations are much faster than subtraction operations. When you will be using a
+certain instruction many times over, even small differences might cause the program
+to slow down quite a bit. Hence, the compiler sometimes would use `test` instead of
+`cmp` instructions before a jump, just to speed up the program.
 
 - - - -
 

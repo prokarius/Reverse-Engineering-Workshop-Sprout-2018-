@@ -156,7 +156,7 @@ range `0x30` to `0x39`. In fact, let me just link a picture from the website
 [https://www.asciitable.com/](https://www.asciitable.com/) that probably took it
 from lookuptables.com:
 
-![Figure 1: ascii Table][ascii]
+![ascii Table][ascii]
 
 - - - -
 
@@ -277,6 +277,17 @@ The most important function in a C program would be the main function. It tells
 the computer that the lines of code within it starts the program. The program would
 run until the end of the main function, after which the program would end.
 
+### Comments
+
+One last thing that you would see me use often in codes which I provide is comments.
+In C, comments are lines which begin with two slashes (`//`). In x86 assembly, they
+would begin with a semicolon (`;`). For those lines with those comments, you will
+ignore everything that comes after the comment markers.
+
+```
+// This is a comment
+int x = 5; // A comment to say that x has a value of 5
+```
 
 ## Operations
 
