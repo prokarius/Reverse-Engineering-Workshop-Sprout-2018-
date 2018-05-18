@@ -217,9 +217,11 @@ should the function take in more than 4 variables:
 
 If more arguments are still necessary, then they would be pushed directly onto the
 stack before the `call` instruction gets run. They can still be accessed within the
-function, but technically are *outside of the stack frame* of the function. (Note
-that in such a case, clean up steps are required after the function has ended. This
-would eat up a couple of instructions, and make the assembly code generally messier.)
+function, but technically are *outside of the stack pointer* of the function. They
+are still considered part of the stack frame, because the stack frame includes all
+variables passed into the function as well. (Note that in such a case, clean up
+steps are required after the function has ended. This would eat up a couple of
+instructions, and make the assembly code generally messier.)
 
 
 ### Returning a value
@@ -282,7 +284,7 @@ register before the `scanf` function call.
 Suppose we are scanning two `int`s. Then the address that will be
 passed into the `esi` register would be the address where the first `int` is going
 to be stored. When the `scanf` function runs, it will take whatever was input, and
-load it onto the addresses that was given. Then the second
+load it onto the addresses that was given.
 
 But wait, how do we know where the address of the first `int` is going to be at?
 This is where the `lea` instruction comes in. It essentially Loads the Effective
@@ -388,7 +390,7 @@ call    ___isoc99_scanf
 ```
 
 And now notice that the format string of the program (that was moved into the `edi`
-register) is `%d%`. This tells me the computer expects an integer as the password.
+register) is `%d`. This tells me the computer expects an integer as the password.
 This password would then be stored at the house `[rbp+var_FB4]` in the stack.
 
 ```
@@ -402,6 +404,14 @@ call    _strcmp
 Finally it loads the address of `[rbp+s2]` into `rsi`, and the address of
 `[rbp+s1]` into `rdi`. These are the two arguments into the function we are calling:
 `_strcmp`. String compare.
+
+### Short note on string compare:
+
+Given two strings (a bunch of `char`s that ends with the `null byte`), it
+compares the two strings and returns `0` if the two strings are equal. It returns
+an `int` less than `0` if the first string is lexicographically smaller than the
+second string, and an `int` greater than 0 is the first string is lexicographically
+larger than the second string.
 
 ```
 test    eax, eax
@@ -418,10 +428,11 @@ mov     eax, 0
 jmp     short loc_4007AF
 ```
 
-Which print out `YOU ARE NOT THE ADMIN!` and quits the program. (Notice that the
+Which prints out `YOU ARE NOT THE ADMIN!` and quits the program. (Notice that the
 code at memory location `loc4007AF` leads to the end of the main function. Clearly,
 we would need to jump to the location `loc_400746`. Hence we want the result of the
-`_strcmp` function to be 0. 
+`_strcmp` function to be 0. That is, we want the two strings we input in the
+function `_strcmp` to contain the same bunch of `char`s in the same order.
 
 Notice that we are comparing the values in memory location `[rbp+s1]` and `[rbp+s2]`.
 Wait a minute, we scanned in a string into the memory location `[rbp+s1]` and at the

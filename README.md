@@ -1,8 +1,9 @@
 # Basic Reverse Engineering Course (for Sprout 2018)
 
 A basic 2h workshop on Reverse Engineering, created for Sprout for NUSHS 2018.
-As this is a basic introduction, no advanced concepts would be covered. That could
-be found under @nn_amon's [linux-exploitation-course][amoncourse].
+As this is a basic introduction, no advanced concepts would be covered. This
+workshop would not cover pwn topics, just basic reverse engineering. More advanced
+topics could be found under @nn_amon's [linux-exploitation-course][amoncourse].
 
 [amoncourse]: https://github.com/nnamon/linux-exploitation-course
 
@@ -44,9 +45,11 @@ machine language.
 0. [An Intoduction to C][lesson0]
 1. [Reading x86][lesson1]
 2. [Functions][lesson2]
-3. [Loops and recursion in x86] 
+3. [Loops and recursion in x86][lesson3]
+4. Final Exercise -- To be released
 
 [lesson0]: ./lessons/0_introduction/lessonplan.md
 [lesson1]: ./lessons/1_reading_x86/lessonplan.md
 [lesson2]: ./lessons/2_functions/lessonplan.md
+[lesson3]: ./lessons/3_loops/lessonplan.md
 

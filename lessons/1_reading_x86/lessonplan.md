@@ -117,6 +117,7 @@ decreases. Suppose the first object you push into the stack goes to address `B2C
 then the next item you push onto the stack will be at address `B2CC` and so on.
 
 | Address |  Stack  |
+|---------|---------|
 |  B2CD   |   'a'   |
 |  B2CC   |   'b'   |
 |  B2CB   |   'c'   |
@@ -297,16 +298,16 @@ This can be an entire chapter on its own, but we will cover only these basic few
 
 To summarise:
 
-|  Name   |     Code      |        Remarks       |
-|---------|---------------|----------------------|
-|   move  |  mov   r1, r2 |   Copies s1 into s2  |
-|   add   |  add   r1, r2 |                      |
-|   sub   |  sub   r1, r2 |                      |
-|   or    |  or    r1, r2 |                      |
-|   xor   |  xor   r1, r2 |                      |
-|   and   |  and   r1, r2 |                      |
-| rshift  |  shr   r1, r2 | Sometimes can be sar |
-| lshift  |  shl   r1, r2 | Sometimes can be sal |
+|  Name   |     Code      |            Remarks           |
+|---------|---------------|------------------------------|
+|   move  |  mov   r1, r2 | Copies content of r2 into r1 |
+|   add   |  add   r1, r2 |       r1 gets modified       |
+|   sub   |  sub   r1, r2 |       r1 gets modified       |
+|   or    |  or    r1, r2 |       r1 gets modified       |
+|   xor   |  xor   r1, r2 |       r1 gets modified       |
+|   and   |  and   r1, r2 |       r1 gets modified       |
+| rshift  |  shr   r1, r2 |     Sometimes can be sar     |
+| lshift  |  shl   r1, r2 |     Sometimes can be sal     |
 
 
 ## Putting it all together:
