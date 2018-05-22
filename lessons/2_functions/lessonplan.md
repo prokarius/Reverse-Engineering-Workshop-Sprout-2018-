@@ -135,12 +135,12 @@ pointer at the top of the stack frame.
 Suppose a certain function `fn` requires `40 = 0x32` bytes of memory. Then, after
 setting up the stack frame the contents might look a little like this:
 
-|  Address Offset   |  Stack Contents   |                Remarks              |
-|-------------------|-------------------|-------------------------------------|  
-|       -0x32       |                   |   (`fn`'s end) `rsp` points here    |
-|                   |                   |                                     |
-|                   |                   |                                     |
-|       -0x00       |                   |  (`fn`'s start) `rbp` points here   |
+|  Address Offset   |  Stack Contents   |        Remarks        |
+|-------------------|-------------------|-----------------------|
+|       -0x32       |                   |   `rsp` points here   |
+|                   |                   |                       |
+|                   |                   |                       |
+|       -0x00       |                   |   `rbp` points here   |
 
 
 That solves the problem of which variables belong to which function. But the next
@@ -162,6 +162,7 @@ case, the solution is to save the location of where you will backtrack to on the
 stack. Then when you are done with the function that was called, you can simply
 return to where you were with the correct return value of the function, and continue
 running the program. The following two assembly instructions help with that:
+
 
 ### `call` and `retn` assembly instruction
 
@@ -229,7 +230,7 @@ instructions, and make the assembly code generally messier.)
 Now, when a function returns, where would the return value go? Well notice that we
 mentioned in the previous lesson that the `eax` register gets the return value of a
 function. Before the function ends, you will see some lines of assembly code pushing
-a certain value to the eax register. That is the return value!
+a certain value to the `eax` register. That is the return value!
 
 
 ## Analysis Time (Complete ver)
