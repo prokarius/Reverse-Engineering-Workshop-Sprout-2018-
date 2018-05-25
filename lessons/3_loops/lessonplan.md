@@ -145,6 +145,7 @@ We need to take care of that case:
 if (n == 0){
     return 0;
 }
+```
 
 Alright, so now that we have everything together, lets put all the code together!
 Add a couple of helpful prompts and change out return statements into output that
@@ -167,7 +168,7 @@ int main(){
     int y = 0;
     int z = 1;
     int counter = 0;
-    while (counter < n-1){          > #####################
+    while (counter < n-1){
         x = y;
         y = z;
         z = x + y;
@@ -248,7 +249,7 @@ Analysis of an example piece of recursive code will be done as an
 Good. 
 Lets play a game then. 
 See this bomb? It has 15 minutes until it goes kaboom.
-Only if you enter a correct combination will the bomb be defused.
+Only if you enter a correct UserID and passcode, the bomb will be defused.
 You have 15 minutes.
 ```
 

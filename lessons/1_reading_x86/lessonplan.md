@@ -3,8 +3,7 @@
 Now that we have understood what basic C code does and what it does, we can start
 to attempt to read some x86 assembly. We will go through how the computer stores
 data in the stack, and what are the sort of instructions the computer is able to
-execute. Lastly, we will end off by decompiling some assembly and attempt to break
-into a password enabled system. 
+execute. Lastly, we will end off by decompiling some assembly.
 
 ## Yay, lets begin!
 
@@ -396,10 +395,10 @@ the computer to do something else should another set of conditions not be fulfil
 This is done in x86 assembly through the use of the compare instruction (`cmp`), the
 test (`test`) instruction, and the `jump` series of instructions.
 
-The `jump` series of instructions are usually preceeded by a `cmp` instruction. They
-are based on the result of the previous compare instruction, and the jump would be
-taken based on their (pretty self explainatory) codes. There are 4 main `jump`
-instructions in the jump series. They are as such:
+The `jump` series of instructions are usually preceeded by a `cmp` of `test`
+instruction. They are based on the result of the previous compare instruction, and
+the jump would be  taken based on their (pretty self explainatory) codes. There are
+4 main `jump` instructions in the jump series. They are as such:
 
 | Code |              Name             |
 |------|-------------------------------|
@@ -413,88 +412,10 @@ instructions in the jump series. They are as such:
 |  jge | Jump if Greater than or Equal |
 |  jmp |       Unconditional Jump      |
 
+To learn more about what happens in a `cmp` or a `test` instruction, follow this
+link for a [really short digression][cmptest] on how they work.
 
-### Not so short digression to how flags for jump works
-
-In a computer, on top of the 8 registers we introduced above, there also exists a
-special register called the *flag register*. This register is in charge of taking
-note when certain conditions in the code are being fulfilled. An example of a flag is
-the *overflow flag* (`OF`). This flag triggers when the value of the piece of data
-we are working with exceeds the number of bits available in the register. An
-example would be when we subtract a large negative value from a large
-positive value. The resulting value might be bigger than the largest positive
-number that could be represented by the number of bits of the register, and hence
-would result in an overflow, setting the flag.
-
-Of particular interest is the *zero* flag (`ZF`). It is set when the results of an
-arithmetic operation results in a zero value. The next instruction is usually
-followed by a `jz` instruction. This is because the `jz` instruction relies on the
-zero flag to decide whether it should jump to the next value.
-
-Another flag we should take note of are the *sign* flag (`SF`). This lets us know
-whether the result of the previous instruction was positive or negative. If the
-result is a negative number, then the sign flag would be set to 1. With the
-three flags above, we can reason out a couple of how some of the instructions from
-the `jump` series would rely on the flags to work.
-
-A `cmp` instruction essentially takes the second parameter, and subtracts it from
-the first instruction. The flag are then set in the same manner, however the results
-are not stored. We can therefore try to reason out the logic in a jump instruction.
-
-Take the `jle` instruction for example. Suppose we want to jump to a memory
-location if the value in the `eax` register is less than or equal to the value in
-the `edx` register. First we will need to do `cmp  eax, edx`. This subtracts the
-value of `edx` from `eax`. If `eax` is less than or equal to `edx`, then the
-result of doing `eax - edx` would be negative, or 0.
-
-Which flags would be set if `eax - edx` is negative or 0? Well clearly, if the
-zero flag is set, then we can be sure we will jump. How do we tell if `eax - edx`
-is negative though? Consider the situation when both `edx` and `eax` are positive.
-Then the result of `eax - edx` will be negative and will not trigger the overflow
-flag. Then we have `SF = 1` and `OF = 0`. You can reason out in the same way when
-both `eax` and `edx` are negative.
-
-At the same time, if `edx` is a large positive number, and `eax` is a large
-negative number, then it may be the case that `eax - edx` is so small that the
-result underflows. Then `OF` will be triggered. Since the result of the `cmp`
-instruction is positive, therefore `SF` would not be triggered.
-
-Lastly, if `edx` is a large negative number, and `eax` is a large positive number.
-It may be the case that `eax - edx` is so far positive that the result rolls over
-and sets `OF`. However, in that case, the resulting value of the `cmp` instruction
-is negative, it also sets `SF`.
-
-From here we can see that we want to take the jump if `SF != OF` or if `ZF == 1`.
-
-You can try to do the same reasoning for the other instructions in the `jump`
-series. You can check your understanding at [this website][cmps]
-
-[cmps]: http://unixwiz.net/techtips/x86-jumps.html
-
-
-### `cmp` vs `test`
-
-Now it might be the case where instead of seeing a `cmp` instruction before a `jump`
-instruction, you see a `test` instruction. Truth of the matter is, the `test`
-instruction isn't all that different from the `cmp` instruction. In some beginner
-level textbooks, they even remark that `cmp` and `test` instructions are
-interchangable when a `jz` instruction is concerned. However there are some small
-subtle differences in the way they work.
-
-A `cmp` instruction takes the second parameter and *SUBTRACTS* it from the first,
-whereas in a `test` instruction, the *bitwise AND* operation is applied to both
-parameters. In both cases, the result is discarded and not used again, but the side
-effects of doing both these operations are reflected in the flag register. The
-instruction sets some flags which will be read by the computer to determine if the
-following `jump` instruction is to be taken.
-
-Why would a program want to use the `test` instruction though? Remember that bitwise
-operations are much faster than subtraction operations. When you will be using a
-certain instruction many times over, even small differences might cause the program
-to slow down quite a bit. Hence, the compiler sometimes would use `test` instead of
-`cmp` instructions before a jump, just to speed up the program.
-
-- - - -
+[cmptest]: ./comparisons.md
 
 ## Breaking the admin system?
 
