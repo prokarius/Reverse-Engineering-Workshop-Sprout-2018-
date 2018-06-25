@@ -75,7 +75,7 @@ the result of `x` + `y`  to `z`. Then we can print it out:
 int x = 0;
 int y = 1;
 int z = x + y;
-printf ("%d\n" z);
+printf ("%d\n" y);
 ```
 
 Now that only gives us the value of the 2nd fibonacci number. How should we do it if
@@ -97,13 +97,13 @@ z = x + y;
 ```
 
 Ok, now we need to think about the logic. Suppose we run the above code 1 time.
-Then the value of `z` will be the 2nd fibonacci number. If we ran the code 2 times,
-then the value of `z` will be the 3rd fibonacci number. Hence we need to run the
-loop `n-1` times! Let's keep a counter that starts at `0` and counts up.
+Then the value of `y` will be the 1st fibonacci number. If we ran the code 2 times,
+then the value of `y` will be the 2nd fibonacci number. Hence we need to run the
+loop `n` times! Let's keep a counter that starts at `0` and counts up.
 
 ```
 int counter = 0;
-while (counter < (n-1)){
+while (counter < n){
     code;
     counter++; // counter = counter + 1
 }
@@ -116,7 +116,7 @@ We can also do this another way: counting down from `n-2`, and when the value
 reaches `0`, we can just end the loop:
 
 ```
-n -= 2;
+n -= 1;
 while (n){
     code;
     n--;
@@ -137,16 +137,6 @@ int y = 0;
 int z = 1;
 ```
 
-Oh but we have a problem. What if the user wants the 0th fibonacci number? Then the
-loop would not even run, then the final value of z will be the initialised 1.
-We need to take care of that case:
-
-```
-if (n == 0){
-    return 0;
-}
-```
-
 Alright, so now that we have everything together, lets put all the code together!
 Add a couple of helpful prompts and change out return statements into output that
 people can understand what we are doing. The final file can be found by following
@@ -160,22 +150,18 @@ int main(){
     int n;
     scanf ("%d", &n);
 
-    if (n == 0){
-        printf ("The value of the 0th fibonacci number is 0.\n");
-    }
-
     int x;
     int y = 0;
     int z = 1;
     int counter = 0;
-    while (counter < n-1){
+    while (counter < n){
         x = y;
         y = z;
         z = x + y;
         counter++;
     }
 
-    printf ("The value of the %dth fibonacci number is %d.\n", n, z);
+    printf ("The value of the %dth fibonacci number is %d.\n", n, y);
 }
 ```
 

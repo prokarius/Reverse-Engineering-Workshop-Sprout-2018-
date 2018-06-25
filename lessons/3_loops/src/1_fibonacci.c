@@ -5,19 +5,16 @@ int main(){
     int n;
     scanf ("%d", &n);
 
-    if (n == 0){
-        printf ("The value of the 0th fibonacci number is 0.\n");
-    }
-
     int x;
     int y = 0;
     int z = 1;
     int counter = 0;
-    while (counter < n-1){
+    while (counter < n){
         x = y;
         y = z;
         z = x + y;
+        counter++;
     }
 
-    printf ("The value of the %dth fibonacci number is %d.\n", n, z);
+    printf ("The value of the %dth fibonacci number is %d.\n", n, y);
 }
