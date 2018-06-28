@@ -1,0 +1,111 @@
+rcs:
+
+var_18= dword ptr -18h
+var_14= dword ptr -14h
+var_4= dword ptr -4
+
+push    rbp
+mov     rbp, rsp
+mov     [rbp+var_14], edi
+mov     [rbp+var_18], esi
+mov     [rbp+var_4], 0
+jmp     short loc_40066F
+
+loc_400659:
+mov     eax, [rbp+var_18]
+and     eax, 1
+test    eax, eax
+jz      short loc_400669
+
+mov     eax, [rbp+var_14]
+add     [rbp+var_4], eax
+
+loc_400669:
+shl     [rbp+var_14], 1
+shr     [rbp+var_18], 1
+
+loc_40066F:
+cmp     [rbp+var_18], 0
+jnz     short loc_400659
+
+mov     eax, [rbp+var_4]
+pop     rbp
+retn
+rcs endp      "rcs function end
+
+
+main: 
+
+var_14= dword ptr -14h
+var_10= dword ptr -10h
+var_C= dword ptr -0Ch
+var_8= qword ptr -8
+
+push    rbp
+mov     rbp, rsp
+sub     rsp, 20h
+mov     rax, fs:28h
+mov     [rbp+var_8], rax
+xor     eax, eax
+mov     edi, offset format ; "Enter UserID:"
+mov     eax, 0
+call    _printf
+lea     rax, [rbp+var_14]
+mov     rsi, rax
+mov     edi, offset aD  ; "%d"
+mov     eax, 0
+call    ___isoc99_scanf
+mov     edi, offset aEnterPasscode ; "Enter Passcode:"
+mov     eax, 0
+call    _printf
+lea     rax, [rbp+var_10]
+mov     rsi, rax
+mov     edi, offset aD  ; "%d"
+mov     eax, 0
+call    ___isoc99_scanf
+mov     eax, [rbp+var_14]
+cmp     eax, 270Fh
+jle     short loc_4006EF
+
+mov     eax, [rbp+var_10]
+cmp     eax, 270Fh
+jg      short loc_400700
+
+loc_4006EF:
+mov     edi, offset s   ; "Numbers are too small."
+call    _puts
+mov     eax, 0
+jmp     short loc_400744
+
+loc_400700:
+mov     eax, [rbp+var_10]
+mov     edx, eax
+mov     eax, [rbp+var_14]
+mov     esi, edx
+mov     edi, eax
+call    rcs
+mov     [rbp+var_C], eax
+cmp     [rbp+var_C], 6954A9Bh
+jnz     short loc_400735
+
+mov     edi, offset aYouWin ; "You win!"
+call    _puts
+mov     edi, offset aFlag ; "<flag>"
+mov     eax, 0
+call    _printf
+jmp     short loc_40073F
+
+loc_400735:
+mov     edi, offset aWrongAnswer ; "Wrong Answer"
+call    _puts
+
+loc_40073F:
+mov     eax, 0
+
+loc_400744:
+mov     rcx, [rbp+var_8]
+xor     rcx, fs:28h
+jz      short locret_400758
+
+leave
+retn
