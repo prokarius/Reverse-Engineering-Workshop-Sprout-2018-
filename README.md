@@ -46,10 +46,10 @@ machine language.
 1. [Reading x86][lesson1]
 2. [Functions][lesson2]
 3. [Loops and recursion in x86][lesson3]
-4. Final Exercise -- To be released
+4. [Final Exercise][finalchall]
 
 [lesson0]: ./lessons/0_introduction/lessonplan.md
 [lesson1]: ./lessons/1_reading_x86/lessonplan.md
 [lesson2]: ./lessons/2_functions/lessonplan.md
 [lesson3]: ./lessons/3_loops/lessonplan.md
-
+[finalchall]: ./lessons/Final_Challenge/lessonplan.md
