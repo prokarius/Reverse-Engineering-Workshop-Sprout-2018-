@@ -4,6 +4,7 @@ Are you ready enough to reverse engineer a program?
 Find out what input is necessary to unlock the program.
 
 [Final Challenge][first]
+
 [Nerfed Version][second]
 
 For the solution to the first version, follow [this link][firstsolution].
